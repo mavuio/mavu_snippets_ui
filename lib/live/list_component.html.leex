@@ -1,0 +1,81 @@
+<div id="<%= @id %>">
+
+
+
+  <%= case @context.params["rec"] do %>
+
+  <% rec_id when is_binary(rec_id) -> %>
+
+
+  <%= live_component   MavuSnippetsUi.Live.EditSnippetGroupComponent,
+                  id: "snippet_group_detail",
+                  rec_id: MavuUtils.to_int(rec_id),
+                  context: @context,
+                  msg: @msg,
+                  base_path: @base_path
+    %>
+
+
+
+
+  <% _ -> %>
+
+  <%= live_component  MavuSnippetsUi.Live.MavuList.PaginationComponent , list: @items_filtered, class: "mx-8 mt-8 mb-4 " %>
+
+  <%= live_component  MavuSnippetsUi.Live.MavuList.SearchboxComponent , list: @items_filtered %>
+
+  <div class="px-10 mt-8 border-[#ff0000]">
+    <div class="flex flex-col ">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+          <div class="overflow-hidden border-b border-gray-200 shadow sm:rounded-lg">
+            <table class="min-w-full divide-y divide-gray-200">
+              <thead class="bg-gray-50">
+                <tr>
+                  <%= for col <- @items_filtered.metadata.columns do %><%#  %>
+                  <th class="px-6 py-3 text-xs font-bold tracking-wider text-left text-black ">
+                    <%= live_component  MavuSnippetsUi.Live.MavuList.LabelComponent , list: @items_filtered, name: col.name %>
+                  </th> <% end %>
+                  <th>&nbsp;</th>
+                </tr>
+              </thead>
+              <tbody class="bg-white divide-y divide-gray-200">
+                <%= for row <- @items_filtered.data  do %>
+
+                <tr>
+                  <%= for col <- @items_filtered.metadata.columns do %>
+
+                  <%= case {col[:type], MavuList.get_colval(row,@items_filtered.conf,col.name), col.name} do %>
+                  <% {_,val,_} -> %>
+                  <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap"><%= val  %></td>
+                  <% end %>
+                  <% end %>
+                  <td class="flex items-center h-12 space-x-3 text-gray-500">
+
+                    <%= link  tw_icon(&Heroicons.Outline.pencil/1, "w-5 h-5"), to: "#", class: "inline-block", phx_click: "edit_item", phx_value_id: row.id, phx_target: @myself %>
+
+                    <%= link  tw_icon(&Heroicons.Outline.trash/1, "w-5 h-5"), to: "#",
+                    class: "inline-block",
+                    phx_click: "delete_item",
+                    phx_value_id: row.id,
+                    phx_target: @myself,
+                    data: [confirm: "Are you sure you want to delete item '#{row.id}' ?"] %>
+
+                  </td>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="mt-8 mb-4">
+            <%= link tw_icon(&Heroicons.Outline.plus/1,"w-8 h-8 text-gray-400 hover:text-primary-500 inline-block"), to: "#", class: "text-gray-400", phx_click: "add_item", phx_target: @myself %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <% end %>
+</div>

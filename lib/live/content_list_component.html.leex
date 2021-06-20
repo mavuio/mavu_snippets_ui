@@ -1,0 +1,148 @@
+<div phx-hook="PhxContextHook" id="<%= @css_id %>">
+  <div class="contentlist" <%= if @context.multiselect_path==@path  do %> id="<%= @css_id %>_multiselect" x-data="{
+    selected_items:{},
+    all_uids: <%= @items |> Enum.map(&(&1["uid"])) |> Jason.encode!()  |> String.replace(~S("),~S(')) %>,
+    toggle: function(uid){
+       if (this.selected_items[uid]) {
+         delete this.selected_items[uid];
+       } else {
+         this.selected_items[uid] = true;
+       }
+       },
+    selected_uids: function() {
+      const items=this.selected_items;
+      return Object.keys(items).map(function(key, index) {
+        return key;
+      });
+    },
+    send_uids: function(command) {
+          PhxContext.pushEventTo('#<%= @css_id %>',command, this.selected_uids());
+    },
+    select_all: function(){
+      this.all_uids.map( uid => {this.selected_items[uid]=true} )
+    },
+    select_none: function(){
+      this.selected_items={}
+    },
+    size: function() { return this.selected_uids().length }
+  }" <% end %>>
+    <% tinybtn_classes=" w-5 h-5 inline-block text-gray-400 hover:text-red-600"  %>
+
+    <%= if @context.multiselect_path==@path   do %>
+    <div class="p-4 space-y-4 bg-yellow-200 border-2 border-gray-400">
+
+      <div class="flex justify-between space-x-4 ">
+        <div class="flex-auto"><span x-show="size()>0"><span x-text="size()"></span> element(s) selected: </span></div>
+        <%= link  [tw_icon(&Heroicons.Outline.check_circle/1, "w-4 h-4"),content_tag(:div,"select all")], to: "#", "x-show": "size()==0", "x-on:click.stop": "select_all()", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
+        <%= link  [tw_icon(&Heroicons.Outline.x_circle/1, "w-4 h-4"),content_tag(:div,"select none")], to: "#", "x-show": "size()!==0", "x-on:click.stop": "select_none()", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
+        <%= link  [tw_icon(&Heroicons.Solid.x/1, "w-4 h-4"),content_tag(:div,"close")], to: "#", phx_click: "hide_multiselect_ui", phx_target: @myself, class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
+      </div>
+
+      <div class="flex justify-between w-full " x-show="size()>0">
+        <%= link  [tw_icon(&Heroicons.Outline.clipboard_copy/1, "w-4 h-4"),content_tag(:div,"copy to clipboard")], to: "#", "x-on:click.stop": "send_uids('copy_multiple_ce')", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
+        <%#= link  [tw_icon(&Heroicons.Outline.clipboard_copy/1, "w-4 h-4"),content_tag(:div,"cut to clipoard")], to: "#", "x-on:click.stop": "send_uids('cut_multiple_ce')", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
+        <%= link  [tw_icon(&Heroicons.Outline.trash/1, "w-4 h-4"),content_tag(:div,"delete")], to: "#", "x-on:click.stop": "send_uids('delete_multiple_ce')", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
+      </div>
+    </div>
+    <% else %>
+
+    <div class="hidden my-4 text-right">
+      <%= link [tw_icon(&Heroicons.Outline.check_circle/1, "w-5 h-5"), content_tag(:div, "select multiple")] , to: "#", phx_click: "show_multiselect_ui",  phx_target: @myself,  class: " text-xs inline-flex items-center space-x-1 text-gray-400 hover:text-gray-800" %>
+    </div>
+
+    <% end %>
+
+
+
+    <% p=@path %>
+    <%= if match?({^p,_},@context.moving_element)  do %>
+    <% {_,moving_uid} = @context.moving_element %>
+
+    <div class="fixed z-10 flex items-start p-4 space-x-4 bg-yellow-200 shadow-lg ring-gray-800 top-2">
+      <%= link  tw_icon(&Heroicons.Solid.chevron_up/1, "w-10 h-10"), to: "#", phx_click: "move_ce", phx_value_direction: "up", phx_value_uid: moving_uid, phx_target: @myself, class: "btn btn-outline-default " %>
+      <%= link  tw_icon(&Heroicons.Solid.chevron_down/1, "w-10 h-10"), to: "#", phx_click: "move_ce", phx_value_direction: "down", phx_value_uid: moving_uid, phx_target: @myself, class: "btn btn-outline-default " %>
+      <%= link  tw_icon(&Heroicons.Solid.x/1, "w-7 h-7"), to: "#", phx_click: "hide_move_ui", phx_target: @myself, class: "" %>
+    </div>
+
+    <%# x-on:dblclick.stop="$refs.editlink.click()" %>
+
+    <% end %>
+    <%= for item <- @items do %>
+    <div class="relative my-1 border-gray-200 border-px
+
+  <%= if @context.moving_element=={@path,item["uid"]} , do: "ring-2 ring-gray-800 bg-yellow-200" %>
+  <%= if @context.menuing_element=={@path,item["uid"]} , do: "ring-1 ring-gray-500" %>
+  ">
+
+
+      <%= live_component  MavuSnippetsUi.Live.ContentElementComponent,
+      item: item,
+      path: @path,
+      snippet_group: @snippet_group,
+      context: @context,
+      snippet_group: @snippet_group,
+      mode: :backend
+      %>
+
+
+      <%= if @context.multiselect_path==@path do %>
+
+      <div class="absolute flex pt-1 space-x-2 top-1 left-1">
+        <span x-on:click="toggle('<%= item["uid"] %>')" x-ref="<%= item["uid"] %>"
+          class="w-6 h-6 text-gray-700 bg-yellow-200 border-2 border-gray-400 rounded cursor-pointer ring-4 ring-white">
+
+          <span
+            x-show="selected_items['<%= item["uid"] %>']"><%= tw_icon(&Heroicons.Outline.check/1, "w-full h-full") %>
+          </span>
+          <span x-show="!selected_items['<%= item["uid"] %>']">&nbsp;</span>
+        </span>
+      </div>
+
+      <% end %>
+
+      <div class="absolute flex pt-1 space-x-2 top-1 right-1 ">
+        <%= link  tw_icon(&Heroicons.Outline.trash/1, "w-5 h-5"), to: "#", phx_click: "delete_ce", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes, data: [confirm: "Are you sure?"]
+          %>
+
+        <%= link  tw_icon(&Heroicons.Outline.duplicate/1, "w-5 h-5"), to: "#", phx_click: "duplicate_ce", title: "duplicate element",  phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
+          %>
+
+
+        <%#= link  tw_icon(&Heroicons.Outline.clipboard_copy/1, "w-5 h-5"), to: "#", phx_click: "copy_ce", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
+          %>
+
+
+        <%= link tw_icon(&Heroicons.Outline.switch_vertical/1, "w-5 h-5"), to: "#", phx_click: "show_move_ui", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
+          %>
+
+
+        <span><%= live_patch  tw_icon(&Heroicons.Outline.pencil/1, "w-5 h-5"), to: @base_path.(%{action: :edit, rec_id: @snippet_group.id, path: @path, uid: item["uid"]}), class: tinybtn_classes , "x-ref": "editlink" %></span>
+
+        <%= link tw_icon(&Heroicons.Outline.dots_horizontal/1, "w-5 h-5"), to: "#", phx_click: "show_menu", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
+          %>
+        <%= if @context.menuing_element=={@path,item["uid"]} do %>
+
+        <%= live_component   MavuSnippetsUi.Live.ContentListContextmenu,
+      item: item,
+      path: @path,
+      snippet_group: @snippet_group,
+      context: @context,
+      target: @myself
+      %>
+
+        <% end %>
+      </div>
+    </div>
+    <% end %>
+
+
+    <div class="flex items-center justify-start space-x-4">
+      <%= live_patch  tw_icon(&Heroicons.Solid.plus/1, "w-7 h-7"), to: @base_path.(%{action: :add, rec_id: @snippet_group.id, path: @path}), class: tinybtn_classes %>
+      <%= if MavuUtils.present? @clipboard_size do %>
+      <%= link [tw_icon(&Heroicons.Outline.clipboard/1, "w-5 h-5"),content_tag(:div,"paste here"),content_tag(:div,"(#{@clipboard_size})", class: "opacity-40 ml-1")], class: "mt-2 flex items-center text-xs inline-block text-gray-400 hover:text-red-600", to: "#", phx_click: "paste_ce", phx_target: @myself %>
+      <% end %>
+    </div>
+
+  </div>
+
+</div>

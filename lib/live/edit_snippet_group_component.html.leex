@@ -1,0 +1,32 @@
+<div id="<%= @id %>" class="snippet_group_edit_component">
+
+
+
+
+  <div class="flex justify-end">
+    <div class=" mb-4 flex space-x-4">
+
+      <%= for lang <- MavuSnippets.available_langs(@context[:snippets_conf])  do %>
+
+      <%= link lang, to: "#", class: "rounded  text-xs uppercase px-2 py-1 ml-2 min-w-[3em] text-center hover:ring-primary-500 hover:ring-2 "<>(if  lang_is_active(lang,@context), do: "bg-primary-500 text-white", else: "bg-gray-200"),
+      phx_click: "toggle_language_in_params", phx_value_lang: lang, phx_target: @myself %>
+
+      <% end %>
+
+    </div>
+  </div>
+
+  <%= live_component @socket, MavuSnippetsUi.Live.ContentListComponent,
+    id: "snippet_group_#{@snippet_group.id}_root",
+    context: @context,
+    items: @contentlist,
+    snippet_group: @snippet_group,
+    path: "root",
+    base_path: @base_path
+
+    #mode: :backend
+
+    %>
+
+
+</div>
