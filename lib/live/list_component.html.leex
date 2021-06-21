@@ -11,8 +11,8 @@
                   id: "snippet_group_detail",
                   rec_id: MavuUtils.to_int(rec_id),
                   context: @context,
-                  msg: @msg,
-                  base_path: @base_path
+                  mavu_snippets_ui_msg: @mavu_snippets_ui_msg,
+                  base_path: @smart_base_path
     %>
 
 
@@ -68,7 +68,7 @@
             </table>
           </div>
 
-          <div class="mt-8 mb-4">
+          <div class="mt-8 mb-4 ">
             <%= link tw_icon(&Heroicons.Outline.plus/1,"w-8 h-8 text-gray-400 hover:text-primary-500 inline-block"), to: "#", class: "text-gray-400", phx_click: "add_item", phx_target: @myself %>
           </div>
         </div>

@@ -16,10 +16,30 @@
     </div>
   </div>
 
-  <%= live_component @socket, MavuSnippetsUi.Live.ContentListComponent,
-    id: "snippet_group_#{@snippet_group.id}_root",
+
+
+  <%= if @context.params["action"]=="edit" do %>
+
+
+  <%= live_component @socket, MavuSnippetsUi.Live.ContentEditComponent,
+    id: "snippet_group_#{@snippet_group.id}_edit",
     context: @context,
-    items: @contentlist,
+    snippet_group: @snippet_group,
+    path: "root",
+    base_path: @base_path,
+    uid: @context.params["uid"],
+    contentlist: @contentlist
+
+    %>
+
+
+
+  <% end %>
+
+  <%= live_component @socket, MavuSnippetsUi.Live.ContentListComponent,
+    id: "snippet_group_#{@snippet_group.id}_list",
+    context: @context,
+    contentlist: @contentlist,
     snippet_group: @snippet_group,
     path: "root",
     base_path: @base_path
@@ -27,6 +47,8 @@
     #mode: :backend
 
     %>
+
+
 
 
 </div>

@@ -143,13 +143,18 @@ defmodule MavuSnippetsUi.Live.Ce.CeEditBase do
 
       def update_celement(celement, changes) when is_map(celement) and is_map(changes) do
         celement
-        |> Map.merge(Eigenart.Ce.stringify_keys(changes))
+        |> Map.merge(MavuContent.Ce.stringify_keys(changes))
       end
 
       def send_updated_celement_to_parent(celement, %{uid: uid, path: path} = assigns)
           when is_map(celement) do
         next_action = assigns[:next_action] || :close
-        send(self(), {:update_ce, %{uid: uid, path: path, data: celement}, next_action})
+
+        send(
+          self(),
+          {:mavu_snippets_ui_msg,
+           {:update_ce, %{uid: uid, path: path, data: celement}, next_action}}
+        )
       end
 
       # attachment handling:

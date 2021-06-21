@@ -11,11 +11,13 @@ defmodule MavuSnippetsUi.Live.ListComponent do
   @impl true
   def update(%{id: id, context: context} = assigns, socket) do
     items_query = snippet_groups_module(assigns).get_query(assigns, context)
+
     # first load
     {:ok,
      socket
      |> assign(assigns)
      |> assign(
+       smart_base_path: smart_base_path(assigns.base_path, assigns.context),
        items_query: items_query,
        items_filtered:
          MavuList.process_list(
@@ -25,6 +27,17 @@ defmodule MavuSnippetsUi.Live.ListComponent do
            socket.assigns[:items_filtered][:tweaks]
          )
      )}
+  end
+
+  def smart_base_path(base_path_func, context) when is_map(context) do
+    fn params ->
+      {context.params, params}
+
+      (context.params || %{})
+      |> Map.take(~w(langs rec))
+      |> Map.merge(params || %{})
+      |> base_path_func.()
+    end
   end
 
   def listconf(assigns) when is_map(assigns) do
@@ -64,7 +77,13 @@ defmodule MavuSnippetsUi.Live.ListComponent do
   def handle_event("edit_item", %{"id" => rec_id}, socket) do
     {:noreply,
      socket
-     |> push_patch(to: socket.assigns.base_path.(%{"rec" => rec_id}))}
+     |> push_patch(
+       to:
+         socket.assigns.base_path.(%{
+           "rec" => rec_id,
+           "langs" => socket.assigns.context.params["langs"]
+         })
+     )}
   end
 
   def handle_event("delete_item", %{"id" => rec_id}, socket) do

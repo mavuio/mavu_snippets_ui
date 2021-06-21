@@ -9,16 +9,17 @@ defmodule MavuSnippetsUi.Live.EditSnippetGroupComponent do
   def snippet_groups_module(assigns),
     do: assigns[:context][:snippets_ui_conf][:snippet_groups_module]
 
+  # def update(%{msg: :ignore}, socket) do
+  #   "ignore" |> IO.inspect(label: "mwuits-debug 2021-06-20_22:19 ❖ ")
+  #   {:ok, socket}
+  # end
+
   @impl true
-
-  def update(%{msg: :ignore}, socket) do
-    {:ok, socket}
-  end
-
-  def update(%{msg: msg}, socket) when not is_nil(msg) do
+  def update(%{mavu_snippets_ui_msg: msg}, socket) when not is_nil(msg) do
+    msg |> IO.inspect(label: "mwuits-debug 2021-06-20_22:19 ❖ ")
     msg |> IO.inspect(label: "mwuits-debug 2021-06-20_13:23 received pass-down msg")
     res = handle_root_msg(msg, socket)
-    send(self(), {:pass_down, :ignore})
+    send(self(), {:mavu_snippets_ui_msg, nil})
     res
   end
 
@@ -29,9 +30,9 @@ defmodule MavuSnippetsUi.Live.EditSnippetGroupComponent do
       update_in(assigns.context, fn context ->
         context
         |> Map.merge(%{
-          moving_element: nil,
-          menuing_element: nil,
-          multiselect_path: nil,
+          moving_element: socket.assigns[:context][:moving_element],
+          menuing_element: socket.assigns[:context][:menuing_element],
+          multiselect_path: socket.assigns[:context][:multiselect_path],
           clipboard: get_clipboard(socket),
           active_langs: get_active_langs_from_params(context[:params], context[:snippets_conf])
         })
@@ -376,7 +377,7 @@ defmodule MavuSnippetsUi.Live.EditSnippetGroupComponent do
         {:update_ce, %{uid: uid, path: path, data: data} = msg, next_action},
         socket
       ) do
-    msg
+    {msg, next_action}
     |> log("info update_ce #{path}.#{uid} received #{__MODULE__}", :info)
 
     contentlist = Clist.replace(socket.assigns.contentlist, path, uid, data)
@@ -395,15 +396,17 @@ defmodule MavuSnippetsUi.Live.EditSnippetGroupComponent do
           # next_url = Routes.sheet_modify_path(socket, :modify, socket.assigns.snippet_group)
 
           next_url =
-            socket.assigns.base_path.(%{action: :modify, rec_id: socket.assigns.snippet_group.id})
+            socket.assigns.base_path.(%{action: :modify, rec: socket.assigns.snippet_group.id})
+
+          send(self(), {:mavu_snippets_ui_msg, {:push_patch, [to: next_url]}})
 
           socket
-          |> push_patch(to: next_url)
 
         _ ->
           socket
       end
-      |> put_flash(:info, "content-element updated successfully")
+
+    # |> put_flash(:info, "content-element updated successfully")
 
     {:ok,
      socket

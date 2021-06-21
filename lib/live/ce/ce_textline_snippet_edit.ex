@@ -13,35 +13,16 @@ defmodule MavuSnippetsUi.Live.Ce.CeTextlineSnippetEdit do
 
     socket =
       socket
-      |> Phoenix.LiveView.assign(changeset: changeset_for_this_step(celement, context))
+      |> Phoenix.LiveView.assign(
+        changeset: changeset_for_this_step(celement, context),
+        active_language_map:
+          get_active_language_map(
+            assigns.context.active_langs,
+            assigns.context[:snippets_conf]
+          )
+      )
 
     super_update(assigns, socket)
-  end
-
-  @impl true
-  def render(assigns) do
-    assigns |> IO.inspect(label: "CeTextlineSnippetEdit render ")
-
-    ~L"""
-        <%= f = form_for @changeset, "#", as: :step_data, theme: :tw_default,phx_change: :validate, phx_submit: :save, phx_target: @myself, id: @id, class: "w-lg" %>
-
-        <div class="my-4 text-center">
-          <button class="btn btn-primary" type="submit">Save</button>
-        </div>
-
-        <%= if @conf[:mode] == :tweak do  %>
-         <%= live_component @socket, MavuSnippetsUi.Live.Ce.Components.TweakFields , f: f %>
-        <% end %>
-
-
-        <%= input  f, :text_l1,  using: :text_input, rows: 5 ,label: "Text:"  %>
-        <%#= input  f, :text_l2,  class: "hidden", using: :text_input, rows: 5 ,label: "Text [DE]:", placeholder: f.params["text_l1"]  %>
-
-
-
-
-        </form>
-    """
   end
 
   @impl true
@@ -49,11 +30,24 @@ defmodule MavuSnippetsUi.Live.Ce.CeTextlineSnippetEdit do
     data = %{}
 
     types =
-      ~w(text_l2 text_l1 slug)a
+      ~w(text_l1 text_l2 text_l3 text_l4 text_l5 text_l6 text_l7 text_l8 text_l9 slug)a
       |> Enum.map(&{&1, :string})
       |> Map.new()
 
     {data, types}
     |> Ecto.Changeset.cast(values, Map.keys(types), empty_values: [])
+  end
+
+  def get_active_language_map(active_langs, conf \\ %{}) when is_list(active_langs) do
+    active_langs
+    |> Enum.map(fn lang ->
+      langnum = MavuSnippets.langnum_for_langstr(lang, conf)
+
+      %{
+        lang: lang,
+        langnum: langnum,
+        fieldname: "text_l#{langnum}" |> String.to_existing_atom()
+      }
+    end)
   end
 end

@@ -53,7 +53,6 @@
     <% end %>
 
 
-
     <% p=@path %>
     <%= if match?({^p,_},@context.moving_element)  do %>
     <% {_,moving_uid} = @context.moving_element %>
@@ -67,7 +66,7 @@
     <%# x-on:dblclick.stop="$refs.editlink.click()" %>
 
     <% end %>
-    <%= for item <- @items do %>
+    <%= for item <- @contentlist do %>
     <div class="relative my-1 border-gray-200 border-px
 
   <%= if @context.moving_element=={@path,item["uid"]} , do: "ring-2 ring-gray-800 bg-yellow-200" %>
@@ -104,7 +103,7 @@
         <%= link  tw_icon(&Heroicons.Outline.trash/1, "w-5 h-5"), to: "#", phx_click: "delete_ce", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes, data: [confirm: "Are you sure?"]
           %>
 
-        <%= link  tw_icon(&Heroicons.Outline.duplicate/1, "w-5 h-5"), to: "#", phx_click: "duplicate_ce", title: "duplicate element",  phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
+        <%#= link  tw_icon(&Heroicons.Outline.duplicate/1, "w-5 h-5"), to: "#", phx_click: "duplicate_ce", title: "duplicate element",  phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
           %>
 
 
@@ -116,9 +115,9 @@
           %>
 
 
-        <span><%= live_patch  tw_icon(&Heroicons.Outline.pencil/1, "w-5 h-5"), to: @base_path.(%{action: :edit, rec_id: @snippet_group.id, path: @path, uid: item["uid"]}), class: tinybtn_classes , "x-ref": "editlink" %></span>
+        <%= live_patch  tw_icon(&Heroicons.Outline.pencil/1, "w-5 h-5"), to: @base_path.(%{action: :edit, path: @path, uid: item["uid"]}), class: tinybtn_classes , "x-ref": "editlink" %>
 
-        <%= link tw_icon(&Heroicons.Outline.dots_horizontal/1, "w-5 h-5"), to: "#", phx_click: "show_menu", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
+        <%#= link tw_icon(&Heroicons.Outline.dots_horizontal/1, "w-5 h-5"), to: "#", phx_click: "show_menu", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
           %>
         <%= if @context.menuing_element=={@path,item["uid"]} do %>
 
@@ -136,8 +135,8 @@
     <% end %>
 
 
-    <div class="flex items-center justify-start space-x-4">
-      <%= live_patch  tw_icon(&Heroicons.Solid.plus/1, "w-7 h-7"), to: @base_path.(%{action: :add, rec_id: @snippet_group.id, path: @path}), class: tinybtn_classes %>
+    <div class="flex items-center justify-start space-x-4 hidden">
+      <%= live_patch  tw_icon(&Heroicons.Solid.plus/1, "w-7 h-7"), to: @base_path.(%{action: :add, path: @path}), class: tinybtn_classes %>
       <%= if MavuUtils.present? @clipboard_size do %>
       <%= link [tw_icon(&Heroicons.Outline.clipboard/1, "w-5 h-5"),content_tag(:div,"paste here"),content_tag(:div,"(#{@clipboard_size})", class: "opacity-40 ml-1")], class: "mt-2 flex items-center text-xs inline-block text-gray-400 hover:text-red-600", to: "#", phx_click: "paste_ce", phx_target: @myself %>
       <% end %>

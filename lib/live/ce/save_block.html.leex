@@ -1,0 +1,27 @@
+<div x-data="{
+  submitAndClose: function() {
+    const field=this.getNextActionField();
+    field.value='close';
+    this.$refs.submit_btn.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+    field.value='';
+  },
+  getNextActionField() {
+    const form=this.$el.closest('form');
+    const field=form.querySelector('#_next_action_field');
+    if(field) {
+      return field;
+    } else {
+        var input = document.createElement('input');
+        input.type = 'hidden';
+        input.id = '_next_action_field';
+        input.name = 'step_data[__next_action]';
+        const newfield=form.appendChild(input);
+        return newfield;
+    }
+  }
+}" class="<%= assigns[:class]  %>">
+  <div class="flex justify-between mt-8 mb-8 space-x-8 text-center ">
+    <button class="btn btn-outline-primary" type="submit" x-ref="submit_btn">Save</button>
+    <a x-on:click.stop.prevent="submitAndClose" href="#" class="btn btn-primary" type="submit">Save & Close</a>
+  </div>
+</div>
