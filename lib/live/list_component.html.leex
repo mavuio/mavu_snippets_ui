@@ -4,7 +4,7 @@
 
   <%= case @context.params["rec"] do %>
 
-  <% rec_id when is_binary(rec_id) -> %>
+  <% rec_id when is_binary(rec_id)  -> %>
 
 
   <%= live_component   MavuSnippetsUi.Live.EditSnippetGroupComponent,

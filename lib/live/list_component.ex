@@ -36,6 +36,10 @@ defmodule MavuSnippetsUi.Live.ListComponent do
       (context.params || %{})
       |> Map.take(~w(langs rec))
       |> Map.merge(params || %{})
+      |> case do
+        %{"rec" => "0"} = params -> Map.drop(params, ~w(rec))
+        params -> params
+      end
       |> base_path_func.()
     end
   end
