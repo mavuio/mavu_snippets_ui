@@ -62,7 +62,7 @@ defmodule MavuSnippetsUi.BackendHelpers do
   defdelegate true?(term), to: MavuUtils
   defdelegate false?(term), to: MavuUtils
 
-  def s(_lang_or_params, _key, default \\ nil, _variables \\ []), do: default
+  # def s(_lang_or_params, _key, default \\ nil, _variables \\ []), do: default
 
   # defdelegate s(lang_or_params, key, default \\ nil, variables \\ []),
   # to: MyAppWeb.MyHelpers

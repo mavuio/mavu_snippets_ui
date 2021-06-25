@@ -4,7 +4,7 @@ defmodule MavuSnippetsUi.Live.Ce.CeTextlineSnippetEdit do
   use MavuSnippetsUi.Live.Ce.CeEditBase
   use MavuSnippetsUiWeb, :live_component
 
-  # import Eigenart.EaHelpers
+  # importMavuUtils
   @impl true
   def update(%{celement: celement} = assigns, socket) do
     context = %{}
