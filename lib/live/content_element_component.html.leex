@@ -10,8 +10,7 @@
     <div hidden class="p-1 text-xs text-blue-500 truncate opacity-50 hover:opacity-100"><%= @item["classes"] %></div>
   </div>
 
-  <%= live_component @socket,
-          component_name,
+  <%= live_component           component_name,
           item: @item,
           path: @path,
           snippet_group: @snippet_group,

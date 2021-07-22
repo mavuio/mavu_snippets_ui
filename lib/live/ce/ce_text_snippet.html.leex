@@ -8,8 +8,7 @@
 
   <% {mode,content}= MavuSnippets.get_effective_text_from_element(@item,lang, @context[:snippets_conf]) %>
 
-  <div class="border-2 rounded border-gray-400 p-2 <%= case mode do :custom -> ""; _ -> "opacity-40" end %>"
-    title="Mode: <%= mode %>">
+  <div class="<%= case mode do :custom -> ""; _ -> "opacity-40" end %>" title="Mode: <%= mode %>">
 
     <div class="prose prose-xs"><%= content  |> text_to_html() %></div>
   </div>

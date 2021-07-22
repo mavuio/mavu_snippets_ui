@@ -68,9 +68,37 @@ defmodule MavuSnippetsUi.Live.Ce.CeEditBase do
          socket
          |> Phoenix.LiveView.assign(assigns)
          |> Phoenix.LiveView.assign(
-           changeset: changeset_for_this_step(celement, context),
+           changeset:
+             changeset_for_this_step(
+               celement |> fill_with_defaults(socket.assigns, context),
+               context
+             ),
            next_action: :keep_editing
          )}
+      end
+
+      def fill_with_defaults(
+            celement,
+            %{active_language_map: active_language_map} = assigns,
+            _context
+          )
+          when is_map(celement) and is_map(assigns) do
+        active_language_map
+        |> Enum.reduce(celement, fn %{langnum: langnum}, celement ->
+          fill_element_with_default(celement, langnum)
+        end)
+      end
+
+      def fill_with_defaults(celement, _assigns, _context), do: celement
+
+      def fill_element_with_default(celement, langnum)
+          when is_map(celement) and is_integer(langnum) do
+        if MavuUtils.empty?(celement["text_l#{langnum}"]) do
+          celement |> Map.put("text_l#{langnum}", celement["text_d#{langnum}"])
+        else
+          celement
+        end
+        |> IO.inspect(label: "mwuits-debug 2021-07-22_12:11 FILL #{langnum}")
       end
 
       def super_handle_event("validate", %{"step_data" => incoming_data} = msg, socket) do

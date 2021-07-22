@@ -7,8 +7,7 @@
 
    <%= for l <- @active_language_map do %>
 
-
-   <% {mode,placeholder}= MavuSnippets.get_effective_text_from_element(@celement,l.lang, @context[:snippets_conf]) %>
+   <% placeholder= MavuSnippets.get_default_text_from_element(@celement,l.lang, @context[:snippets_conf]) %>
 
    <div
      class="inline-block rounded  text-xs uppercase px-2 py-1 ml-2 min-w-[3em] text-center hover:ring-primary-500 hover:ring-2 bg-gray-200"
@@ -16,7 +15,13 @@
      <%= l.lang %></div>
 
 
-   <%= input  f, l.fieldname,  using: :textarea, rows: 5,  label: "Text:", placeholder: placeholder  %>
+   <%= input  f, l.fieldname, ([ using: :textarea, rows: 5,  label: "Text:", placeholder: placeholder ] ++
+    if connected?(@socket), do: [
+  "x-data": "{ init() {this.resize();}, resize(){ console.log('#log 3085 RESIZE'); this.$el.style.height = '5px'; this.$el.style.height = $el.scrollHeight + 'px' } }",
+  "x-on:input": "resize()"
+   ], else: [])
+
+    %>
 
    <% end %>
 

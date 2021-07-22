@@ -28,7 +28,7 @@ defmodule MavuSnippetsUi.BackendHelpers do
   end
 
   def remove_attributes(attributes, tags_to_remove) when is_list(tags_to_remove) do
-    # {attributes, tags_to_remove} |> Eigenart.EaError.die(label: "mwuits-debug 2021-01-16_20:06 ")
+    # {attributes, tags_to_remove} |> MyApp.Error.die(label: "mwuits-debug 2021-01-16_20:06 ")
     attributes
     |> Enum.filter(fn {key, _val} ->
       key not in tags_to_remove

@@ -6,15 +6,10 @@ defmodule MavuSnippetsUi.Live.Ce.CeTextlineSnippetEdit do
 
   # importMavuUtils
   @impl true
-  def update(%{celement: celement} = assigns, socket) do
-    context = %{}
-
-    assigns |> IO.inspect(label: "CeTextlineSnippetEdit assigns ")
-
+  def update(assigns, socket) do
     socket =
       socket
       |> Phoenix.LiveView.assign(
-        changeset: changeset_for_this_step(celement, context),
         active_language_map:
           get_active_language_map(
             assigns.context.active_langs,

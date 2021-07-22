@@ -4,17 +4,13 @@ defmodule MavuSnippetsUi.Live.Ce.CeTextSnippetEdit do
   use MavuSnippetsUi.Live.Ce.CeEditBase
   use MavuSnippetsUiWeb, :live_component
 
-  # importMavuUtils
+  import MavuUtils, only: [pipe_when: 3]
+
   @impl true
-  def update(%{celement: celement} = assigns, socket) do
-    context = %{}
-
-    assigns |> IO.inspect(label: "CeTextSnippetEdit assigns ")
-
+  def update(assigns, socket) do
     socket =
       socket
       |> Phoenix.LiveView.assign(
-        changeset: changeset_for_this_step(celement, context),
         active_language_map:
           get_active_language_map(
             assigns.context.active_langs,
@@ -26,7 +22,7 @@ defmodule MavuSnippetsUi.Live.Ce.CeTextSnippetEdit do
   end
 
   @impl true
-  def changeset_for_this_step(values, _params) do
+  def changeset_for_this_step(values, params) do
     data = %{}
 
     types =
@@ -36,6 +32,24 @@ defmodule MavuSnippetsUi.Live.Ce.CeTextSnippetEdit do
 
     {data, types}
     |> Ecto.Changeset.cast(values, Map.keys(types), empty_values: [])
+    |> MavuUtils.pipe_when(
+      String.contains?("#{params[:celement]["slug"]}", "_json"),
+      validate_json(:text_l1)
+    )
+  end
+
+  def validate_json(changeset, field, options \\ []) do
+    Ecto.Changeset.validate_change(changeset, field, fn
+      _, "" ->
+        []
+
+      _, str ->
+        Jason.decode(str)
+        |> case do
+          {:ok, _} -> []
+          {:error, _} -> [{field, options[:message] || "error in JSON-Syntax"}]
+        end
+    end)
   end
 
   def get_active_language_map(active_langs, conf \\ %{}) when is_list(active_langs) do
