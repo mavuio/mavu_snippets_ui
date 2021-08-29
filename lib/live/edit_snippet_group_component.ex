@@ -38,13 +38,25 @@ defmodule MavuSnippetsUi.Live.EditSnippetGroupComponent do
         })
       end)
 
+    sg_id =
+      case assigns.rec_id do
+        "/" <> path ->
+          MavuSnippets.SnippetGroups.get_snippet_group(path, assigns.context[:snippets_conf])[
+            :id
+          ]
+
+        rec_id ->
+          MavuUtils.to_int(rec_id)
+      end
+
     socket =
       socket
       |> assign(assigns)
       |> assign(
+        return_path: get_return_path(assigns.context, assigns.base_path),
         snippet_group:
           snippet_groups_module(assigns).get_snippet_group(
-            MavuUtils.to_int(assigns.rec_id),
+            sg_id,
             assigns[:context][:snippets_ui_conf]
           )
       )
@@ -54,6 +66,14 @@ defmodule MavuSnippetsUi.Live.EditSnippetGroupComponent do
       |> assign(contentlist: socket.assigns.snippet_group.content)
 
     {:ok, socket}
+  end
+
+  def get_return_path(%{params: %{"return_to" => return_path}}, _base_path) do
+    return_path
+  end
+
+  def get_return_path(context, base_path) when is_map(context) and is_function(base_path) do
+    base_path.(%{"rec" => "0"})
   end
 
   def get_active_langs_from_params(%{"langs" => langs_str} = _params, snippets_conf) do

@@ -1,4 +1,5 @@
 deps
 .elixir_ls
 _build
+doc
 

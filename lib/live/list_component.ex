@@ -34,7 +34,8 @@ defmodule MavuSnippetsUi.Live.ListComponent do
       {context.params, params}
 
       (context.params || %{})
-      |> Map.take(~w(langs rec))
+      # keep this params in URL:
+      |> Map.take(~w(langs rec return_to))
       |> Map.merge(params || %{})
       |> case do
         %{"rec" => "0"} = params -> Map.drop(params, ~w(rec))

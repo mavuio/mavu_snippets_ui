@@ -2,6 +2,7 @@
 
 
 
+
   <%= case @context.params["rec"] do %>
 
   <% rec_id when is_binary(rec_id)  -> %>
@@ -9,7 +10,7 @@
 
   <%= live_component   MavuSnippetsUi.Live.EditSnippetGroupComponent,
                   id: "snippet_group_detail",
-                  rec_id: MavuUtils.to_int(rec_id),
+                  rec_id: rec_id,
                   context: @context,
                   mavu_snippets_ui_msg: @mavu_snippets_ui_msg,
                   base_path: @smart_base_path
