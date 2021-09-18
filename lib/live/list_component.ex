@@ -12,6 +12,9 @@ defmodule MavuSnippetsUi.Live.ListComponent do
   def update(%{id: id, context: context} = assigns, socket) do
     items_query = snippet_groups_module(assigns).get_query(assigns, context)
 
+    # hacky default tweaks
+    assigns = assigns |> Map.put(:items_filtered, %{tweaks: %{sort_by: [[:path, :asc]]}})
+
     # first load
     {:ok,
      socket
@@ -24,7 +27,7 @@ defmodule MavuSnippetsUi.Live.ListComponent do
            items_query,
            id,
            listconf(assigns),
-           socket.assigns[:items_filtered][:tweaks]
+           assigns[:items_filtered][:tweaks]
          )
      )}
   end
@@ -73,12 +76,24 @@ defmodule MavuSnippetsUi.Live.ListComponent do
     end
   end
 
+  def edit_url(snippet_record, base_path, context)
+      when is_map(context) and
+             is_map(snippet_record) and
+             is_function(base_path) do
+    base_path.(%{
+      "rec" => "/" <> snippet_record.path,
+      "langs" => context.params["langs"]
+    })
+    |> String.replace("%2F", "/")
+  end
+
   def handle_event("add_item", _msg, socket) do
     {:noreply,
      socket
      |> push_patch(to: socket.assigns.base_path.(%{"rec" => "new"}))}
   end
 
+  # not in use anymore:
   def handle_event("edit_item", %{"id" => rec_id}, socket) do
     {:noreply,
      socket

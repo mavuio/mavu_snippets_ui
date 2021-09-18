@@ -53,7 +53,9 @@
                   <% end %>
                   <td class="flex items-center h-12 space-x-3 text-gray-500">
 
-                    <%= link  tw_icon(&Heroicons.Outline.pencil/1, "w-5 h-5"), to: "#", class: "inline-block", phx_click: "edit_item", phx_value_id: row.id, phx_target: @myself %>
+
+                    <%= live_patch  tw_icon(&Heroicons.Outline.pencil/1, "w-5 h-5"), to: edit_url(row, @base_path, @context ) %>
+
 
                     <%= link  tw_icon(&Heroicons.Outline.trash/1, "w-5 h-5"), to: "#",
                     class: "inline-block",
