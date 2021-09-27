@@ -5,7 +5,9 @@ defmodule MavuSnippetsUi do
     %{
       snippet_groups_module: MavuSnippets.SnippetGroups,
       snippet_group_module: MavuSnippets.SnippetGroup,
-      repo: MyApp.Repo
+      repo: MyApp.Repo,
+      routes: MyAppWeb.Router.Helpers,
+      fileupload_base_path: "/uploads"
     }
     |> Map.merge(local_conf)
   end

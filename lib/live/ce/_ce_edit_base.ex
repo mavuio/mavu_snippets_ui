@@ -212,9 +212,9 @@ defmodule MavuSnippetsUi.Live.Ce.CeEditBase do
         |> Map.keys()
       end
 
-      def get_attachment_basepath(_socket, field, entry)
+      def get_attachment_basepath(socket, field, entry)
           when is_atom(field) and is_map(entry) do
-        "/ce_files"
+        socket.assigns.context.snippets_ui_conf.fileupload_base_path || "ce_files"
       end
 
       def get_attachment_url(socket, field, entry) when is_atom(field) and is_map(entry) do
@@ -224,7 +224,7 @@ defmodule MavuSnippetsUi.Live.Ce.CeEditBase do
             get_attachment_filename(socket, field, entry)
           )
 
-        Application.get_env(:kandis, :routes).static_path(socket, path)
+        socket.assigns.context.snippets_ui_conf.routes.static_path(socket, path)
       end
 
       def get_attachment_storage_path(socket, field, entry)

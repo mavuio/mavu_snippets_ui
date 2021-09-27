@@ -1,7 +1,7 @@
 defmodule MavuSnippetsUi.MixProject do
   use Mix.Project
 
-  @version "0.1.8"
+  @version "0.1.9"
   def project do
     [
       app: :mavu_snippets_ui,
@@ -31,8 +31,8 @@ defmodule MavuSnippetsUi.MixProject do
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
 
       {:phoenix_html, ">= 2.0.0"},
-      {:phoenix, ">= 1.5.0"},
-      {:phoenix_live_view, ">= 0.15.7"},
+      {:phoenix, ">= 1.5.9"},
+      {:phoenix_live_view, ">= 0.16.0"},
       {:mavu_utils, "~> 0.1.0"},
       {:mavu_list, "~> 0.1.9"},
       {:mavu_form, "~> 0.1.0"},
