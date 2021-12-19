@@ -1,7 +1,8 @@
-<div phx-hook="PhxContextHook" id="<%= @css_id %>">
-  <div class="contentlist" <%= if @context.multiselect_path==@path  do %> id="<%= @css_id %>_multiselect" x-data="{
+<div id={"#{ @css_id }"}>
+  <div class="contentlist" {
+    if (@context.multiselect_path==@path), do: [id: "#{@css_id}_multiselect", "x-data": "{
     selected_items:{},
-    all_uids: <%= @items |> Enum.map(&(&1["uid"])) |> Jason.encode!()  |> String.replace(~S("),~S(')) %>,
+    all_uids: #{@items |> Enum.map(&(&1["uid"])) |> Jason.encode!()  |> String.replace(~S("),~S('))},
     toggle: function(uid){
        if (this.selected_items[uid]) {
          delete this.selected_items[uid];
@@ -16,7 +17,7 @@
       });
     },
     send_uids: function(command) {
-          PhxContext.pushEventTo('#<%= @css_id %>',command, this.selected_uids());
+          PhxContext.pushEventTo('##{@css_id}',command, this.selected_uids());
     },
     select_all: function(){
       this.all_uids.map( uid => {this.selected_items[uid]=true} )
@@ -25,7 +26,7 @@
       this.selected_items={}
     },
     size: function() { return this.selected_uids().length }
-  }" <% end %>>
+  }"], else: [] } >
     <% tinybtn_classes=" w-5 h-5 inline-block text-gray-400 hover:text-red-600"  %>
 
     <%= if @context.multiselect_path==@path   do %>
@@ -63,37 +64,25 @@
       <%= link  tw_icon(&Heroicons.Solid.x/1, "w-7 h-7"), to: "#", phx_click: "hide_move_ui", phx_target: @myself, class: "" %>
     </div>
 
-    <%# x-on:dblclick.stop="$refs.editlink.click()" %>
 
     <% end %>
     <%= for item <- @contentlist do %>
-    <div class="relative my-1 border-gray-200 border-px
-
-  <%= if @context.moving_element=={@path,item["uid"]} , do: "ring-2 ring-gray-800 bg-yellow-200" %>
-  <%= if @context.menuing_element=={@path,item["uid"]} , do: "ring-1 ring-gray-500" %>
-  ">
+    <div class={"relative my-1 border-gray-200 border-px\n\n  #{ if @context.moving_element=={@path,item["uid"]} , do: "ring-2 ring-gray-800 bg-yellow-200" }\n  #{ if @context.menuing_element=={@path,item["uid"]} , do: "ring-1 ring-gray-500" }\n  "}>
 
 
-      <%= live_component  MavuSnippetsUi.Live.ContentElementComponent,
-      item: item,
-      path: @path,
-      snippet_group: @snippet_group,
-      context: @context,
-      snippet_group: @snippet_group,
-      mode: :backend
-      %>
+      <.live_component id={"content_element_#{item["uid"]}"} module={MavuSnippetsUi.Live.ContentElementComponent}  item={item} path={@path} snippet_group={@snippet_group} context={@context} snippet_group={@snippet_group} mode={:backend} />
 
 
       <%= if @context.multiselect_path==@path do %>
 
       <div class="absolute flex pt-1 space-x-2 top-1 left-1">
-        <span x-on:click="toggle('<%= item["uid"] %>')" x-ref="<%= item["uid"] %>"
+        <span x-on:click={"toggle('#{ item["uid"] }')"} x-ref={"#{ item["uid"] }"}
           class="w-6 h-6 text-gray-700 bg-yellow-200 border-2 border-gray-400 rounded cursor-pointer ring-4 ring-white">
 
           <span
-            x-show="selected_items['<%= item["uid"] %>']"><%= tw_icon(&Heroicons.Outline.check/1, "w-full h-full") %>
+            x-show={"selected_items['#{ item["uid"] }']"}><%= tw_icon(&Heroicons.Outline.check/1, "w-full h-full") %>
           </span>
-          <span x-show="!selected_items['<%= item["uid"] %>']">&nbsp;</span>
+          <span x-show={"!selected_items['#{ item["uid"] }']"}>&nbsp;</span>
         </span>
       </div>
 
@@ -115,19 +104,13 @@
           %>
 
 
-        <%= live_patch  tw_icon(&Heroicons.Outline.pencil/1, "w-5 h-5"), to: @base_path.(%{action: :edit, path: @path, uid: item["uid"]}), class: tinybtn_classes , "x-ref": "editlink" %>
+        <%= live_patch  tw_icon(&Heroicons.Outline.pencil/1, "w-5 h-5"), to: @base_path.(%{action: :edit, path: @path, uid: item["uid"]}), class: tinybtn_classes %>
 
         <%#= link tw_icon(&Heroicons.Outline.dots_horizontal/1, "w-5 h-5"), to: "#", phx_click: "show_menu", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
           %>
         <%= if @context.menuing_element=={@path,item["uid"]} do %>
 
-        <%= live_component   MavuSnippetsUi.Live.ContentListContextmenu,
-      item: item,
-      path: @path,
-      snippet_group: @snippet_group,
-      context: @context,
-      target: @myself
-      %>
+        <.live_component id="contextmenu" module={MavuSnippetsUi.Live.ContentListContextmenu}  item={item} path={@path} snippet_group={@snippet_group} context={@context} target={@myself} />
 
         <% end %>
       </div>

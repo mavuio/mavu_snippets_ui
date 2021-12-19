@@ -1,0 +1,15 @@
+<div id={"#{ @id }"} class="snippets_edit_component">
+  <.live_component module={MyAppBe.Live.Components.CenteredModalComponent} id="modelcomp" phx_target={"##{@id}"} class="sm:max-w-[90vw] sm:w-[600px] w-full" >
+  <div class="my-8 snippets_component_inner">
+
+
+    <div class="w-full ">
+      <.live_component module={@edit_component_name}  id={@component_id} uid={@uid} path={@path} snippet_group={@snippet_group} celement={@celement} context={@context} />
+
+    </div>
+
+
+  </div>
+
+</.live_component>
+</div>

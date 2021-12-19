@@ -1,0 +1,13 @@
+<section>
+  <.form let={f} for={@changeset} url="#" as={:step_data} theme={:tw_default} phx-change={:validate} phx-submit={:save} phx-target={@myself} id={@id} class="w-lg">
+  <.live_component id="saveblock_top" module={MavuSnippetsUi.Live.Ce.SaveBlock}  class="mb-5" />
+  <%= for l <- @active_language_map do %>
+  <% {_mode,placeholder}= MavuSnippets.get_effective_text_from_element(@celement,l.lang, @context[:snippets_conf]) %>
+  <div
+    class="inline-block rounded  text-xs uppercase px-2 py-1 ml-2 min-w-[3em] text-center hover:ring-primary-500 hover:ring-2 bg-gray-200"
+    title={"#{ l.langnum }"}>
+    <%= l.lang %></div>
+  <%= input  f, l.fieldname,  using: :text_input, label: "Text:", placeholder: placeholder  %>
+  <% end %>
+  </.form>
+</section>

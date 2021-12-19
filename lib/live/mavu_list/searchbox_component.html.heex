@@ -1,9 +1,4 @@
-<div class="flex justify-end" id="list-search" x-data="{
-  keyword: '<%= @keyword %>',
-  start_search:function() {
-     window.PhxContext.pushEventTo('<%= @target %>','list.set_keyword', {keyword: this.keyword});
-  }
-  }">
+<div class="flex justify-end" id="list-search" x-data={"{\n  keyword: '#{ @keyword }',\n  start_search:function() {\n     window.PhxContext.pushEventTo('#{ @target }','list.set_keyword', {keyword: this.keyword});\n  }\n  }"}>
   <div class="px-3 mt-5 w-60">
     <label for="search" class="sr-only">Search</label>
     <div class="relative mt-1 rounded-md shadow-sm">

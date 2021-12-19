@@ -19,7 +19,7 @@
         return newfield;
     }
   }
-}" class="<%= assigns[:class]  %>">
+}" class={"#{ assigns[:class]  }"}>
   <div class="flex justify-between mt-8 mb-8 space-x-8 text-center ">
     <button class="btn btn-outline-primary" type="submit" x-ref="submit_btn">Save</button>
     <a x-on:click.stop.prevent="submitAndClose" href="#" class="btn btn-primary" type="submit">Save & Close</a>

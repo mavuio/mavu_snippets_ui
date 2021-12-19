@@ -1,4 +1,4 @@
-<div id="<%= @id %>">
+<div id={"#{ @id }"}>
 
 
 
@@ -8,22 +8,17 @@
   <% rec_id when is_binary(rec_id)  -> %>
 
 
-  <%= live_component   MavuSnippetsUi.Live.EditSnippetGroupComponent,
-                  id: "snippet_group_detail",
-                  rec_id: rec_id,
-                  context: @context,
-                  mavu_snippets_ui_msg: @mavu_snippets_ui_msg,
-                  base_path: @smart_base_path
-    %>
+  <.live_component module={MavuSnippetsUi.Live.EditSnippetGroupComponent}  id="snippet_group_detail" rec_id={rec_id} context={@context} mavu_snippets_ui_msg={@mavu_snippets_ui_msg} base_path={@smart_base_path} />
 
 
 
 
   <% _ -> %>
 
-  <%= live_component  MavuSnippetsUi.Live.MavuList.PaginationComponent , list: @items_filtered, class: "mx-8 mt-8 mb-4 " %>
+  <.live_component module={MavuSnippetsUi.Live.MavuList.PaginationComponent} id="pagination_top"  list={@items_filtered} class="mx-8 mt-8 mb-4 " />
 
-  <%= live_component  MavuSnippetsUi.Live.MavuList.SearchboxComponent , list: @items_filtered %>
+  <.live_component module={MavuSnippetsUi.Live.MavuList.SearchboxComponent}  id="searchbox_top" list={@items_filtered} />
+
 
   <div class="px-10 mt-8 border-[#ff0000]">
     <div class="flex flex-col ">
@@ -35,7 +30,7 @@
                 <tr>
                   <%= for col <- @items_filtered.metadata.columns do %><%#  %>
                   <th class="px-6 py-3 text-xs font-bold tracking-wider text-left text-black ">
-                    <%= live_component  MavuSnippetsUi.Live.MavuList.LabelComponent , list: @items_filtered, name: col.name %>
+                    <MavuSnippetsUi.Live.MavuList.LabelComponent.paint list={@items_filtered} name={col.name} />
                   </th> <% end %>
                   <th>&nbsp;</th>
                 </tr>

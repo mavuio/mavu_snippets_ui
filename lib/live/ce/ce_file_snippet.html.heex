@@ -1,25 +1,27 @@
-<div hidden class="grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4 grid-cols-5 grid-cols-6"></div>
-
-<div class="mt-6 ml-4 mb-2 font-bold text-sm"><%= @item["slug"] %></div>
-
-
-<div class={"grid grid-cols-#{@context.active_langs |> length} gap-4 mb-4 mx-4"}>
-  <%= for lang <- @context.active_langs do %>
-
-
-  <% {mode,filename}= MavuSnippets.get_filename_from_element(@item,lang, @context[:snippets_conf]) %>
-
-  <div class={case mode do :custom -> ""; _ -> "opacity-40" end} title={"Mode: #{mode}"}>
-
-    <%= if String.length("#{filename}")>1 do %>
-    <div  class=""><img src={filename}   class="object-contain border w-44 h-44"></div>
-    <% else %>
-    n/a
+<section>
+  <div hidden class="grid-cols-1 grid-cols-2 grid-cols-3 grid-cols-4 grid-cols-5 grid-cols-6"></div>
+  
+  <div class="mt-6 ml-4 mb-2 font-bold text-sm"><%= @item["slug"] %></div>
+  
+  
+  <div class={"grid grid-cols-#{@context.active_langs |> length} gap-4 mb-4 mx-4"}>
+    <%= for lang <- @context.active_langs do %>
+  
+  
+    <% {mode,filename}= MavuSnippets.get_filename_from_element(@item,lang, @context[:snippets_conf]) %>
+  
+    <div class={case mode do :custom -> ""; _ -> "opacity-40" end} title={"Mode: #{mode}"}>
+  
+      <%= if String.length("#{filename}")>1 do %>
+      <div  class=""><img src={filename}   class="object-contain border w-44 h-44"></div>
+      <% else %>
+      n/a
+      <% end %>
+  
+    </div>
+  
+  
+  
     <% end %>
-
   </div>
-
-
-
-  <% end %>
-</div>
+</section>

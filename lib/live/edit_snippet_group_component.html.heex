@@ -1,4 +1,5 @@
-<div id="<%= @id %>" class="snippet_group_edit_component">
+<div id={"#{ @id }"} class="snippet_group_edit_component">
+
 
 
   <div class="flex space-x-4 items-center">
@@ -27,32 +28,13 @@
   <%= if @context.params["action"]=="edit" do %>
 
 
-  <%= live_component  MavuSnippetsUi.Live.ContentEditComponent,
-    id: "snippet_group_#{@snippet_group.id}_edit",
-    context: @context,
-    snippet_group: @snippet_group,
-    path: "root",
-    base_path: @base_path,
-    uid: @context.params["uid"],
-    contentlist: @contentlist
-
-    %>
+  <.live_component module={MavuSnippetsUi.Live.ContentEditComponent}  id={"snippet_group_#{@snippet_group.id}_edit"} context={@context} snippet_group={@snippet_group} path="root" base_path={@base_path} uid={@context.params["uid"]} contentlist={@contentlist} />
 
 
 
   <% end %>
 
-  <%= live_component  MavuSnippetsUi.Live.ContentListComponent,
-    id: "snippet_group_#{@snippet_group.id}_list",
-    context: @context,
-    contentlist: @contentlist,
-    snippet_group: @snippet_group,
-    path: "root",
-    base_path: @base_path
-
-    #mode: :backend
-
-    %>
+  <.live_component module={MavuSnippetsUi.Live.ContentListComponent}  id={"snippet_group_#{@snippet_group.id}_list" }context={@context} contentlist={@contentlist} snippet_group={@snippet_group} path="root" base_path={@base_path} />
 
 
 
