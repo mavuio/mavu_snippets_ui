@@ -68,7 +68,7 @@
              class="inline-block rounded  text-xs uppercase px-2 py-1 ml-2 min-w-[3em] text-center hover:ring-primary-500 hover:ring-2 bg-gray-200"
              title={"#{ l.langnum }"}>
              <%= l.lang %></div>
-           <div class="" phx-update="ignore">
+           <div id={"input_lang_#{l.langnum}"} class="" phx-update="ignore">
              <%= input  f, l.fieldname,  using: :textarea, rows: 5 ,label: "Text:",append_classes: "editable ",
               wrapped_input: [update_html: :custom_fn],
               custom_fn: fn assigns -> %>
