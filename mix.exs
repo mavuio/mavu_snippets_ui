@@ -1,7 +1,7 @@
 defmodule MavuSnippetsUi.MixProject do
   use Mix.Project
 
-  @version "0.1.15"
+  @version "0.1.16"
   def project do
     [
       app: :mavu_snippets_ui,
@@ -38,7 +38,7 @@ defmodule MavuSnippetsUi.MixProject do
       {:mavu_form, "~> 0.1.3"},
       {:mavu_buckets, "~> 0.1.0"},
       {:mavu_content, "~> 0.1.0"},
-      {:mavu_snippets, "~> 0.1.9"},
+      {:mavu_snippets, "~> 0.1.11"},
       {:pit, "~> 1.2.0"},
       {:heroicons, "~> 0.1.0"},
       {:ecto, ">= 3.0.0"},

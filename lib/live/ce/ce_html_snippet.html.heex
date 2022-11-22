@@ -7,9 +7,9 @@
     <%= for lang <- @context.active_langs do %>
   
   
-    <% {mode,content}= MavuSnippets.get_effective_text_from_element(@item,lang, @context[:snippets_conf]) %>
+    <% {content,_lang,mode}= MavuSnippets.get_effective_text_from_element(@item,lang, @context[:snippets_conf]) %>
   
-    <div class={"#{ case mode do :custom -> ""; _ -> "opacity-40" end }"} title={"Mode: #{ mode }"}>
+    <div class={"#{ case mode do :custom -> ""; _ -> "opacity-40" end }"} title={"Mode: #{mode}"}>
   
       <div class="prose prose-xs"><%= content  |> raw() %></div>
     </div>

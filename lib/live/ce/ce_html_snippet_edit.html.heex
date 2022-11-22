@@ -63,7 +63,7 @@
            }
          }">
            <%= for l <- @active_language_map do %>
-           <% {mode,placeholder}= MavuSnippets.get_effective_text_from_element(@celement,l.lang, @context[:snippets_conf]) %>
+           <% {placeholder,_lang,mode}= MavuSnippets.get_effective_text_from_element(@celement,l.lang, @context[:snippets_conf]) %>
            <div
              class="inline-block rounded  text-xs uppercase px-2 py-1 ml-2 min-w-[3em] text-center hover:ring-primary-500 hover:ring-2 bg-gray-200"
              title={"#{ l.langnum }"}>
