@@ -2,7 +2,6 @@
      <.form let={f} for={@changeset} url="#" as={:step_data} theme={:tw_default} phx-change={:validate} phx-submit={:save}
        phx-target={@myself} id={@id} class="w-2xl">
        <.live_component id="saveblock_top" module={MavuSnippetsUi.Live.Ce.SaveBlock} class="mb-5" />
-       TUNYMCE
        <section phx-hook="TinyMceHook" id="tinymce_editors">
          <div x-data="{
            getEditorConf(target) {
