@@ -8,7 +8,10 @@
     <span hidden class="p-1 text-xs text-gray-400 opacity-50 hover:opacity-100"><%= @item["classes_defaults"] %></span>
     <div hidden class="p-1 text-xs text-blue-500 truncate opacity-50 hover:opacity-100"><%= @item["classes"] %></div>
   </div>
-
+<%= if module_exists?(component_name) do %>
   <.live_component id={"content-element-detail-#{@item["uid"]}"} module={component_name}  item={@item} path={@path} snippet_group={@snippet_group} context={@context} mode={@mode} />
+  <% else %>
+  <div class="p-4 text-red-900 text-sm">unknown content-element type '<%= assigns.item["ctype"] %>' <%= component_name %></div>
+<% end %>
 
 </div>

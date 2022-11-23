@@ -6,7 +6,7 @@ defmodule MavuSnippetsUi.Live.ContentElementComponent do
   end
 
   def component_name_for_ctype(ctype) when is_binary(ctype) do
-    String.to_existing_atom("Elixir.MavuSnippetsUi.Live.Ce." <> Macro.camelize(ctype))
+    String.to_atom("Elixir.MavuSnippetsUi.Live.Ce." <> Macro.camelize(ctype))
   end
 
   def module_exists?(module) do
