@@ -19,7 +19,7 @@ defmodule MavuSnippetsUi.Live.Ce.CeFileSnippetEdit do
       |> allow_upload(:filename_l7, accept: :any, dest: "/snippet_files")
       |> allow_upload(:filename_l8, accept: :any, dest: "/snippet_files")
       |> allow_upload(:filename_l9, accept: :any, dest: "/snippet_files")
-      |> Phoenix.LiveView.assign(
+      |> Phoenix.Component.assign(
         active_language_map:
           get_active_language_map(
             assigns.context.active_langs,

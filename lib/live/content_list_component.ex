@@ -6,9 +6,9 @@ defmodule MavuSnippetsUi.Live.ContentListComponent do
   def update(assigns, socket) do
     {:ok,
      socket
-     |> Phoenix.LiveView.assign(assigns)
-     |> Phoenix.LiveView.assign(css_id: String.replace("#{assigns.id}", ~r/[^a-z0-9_-]/, "_"))
-     |> Phoenix.LiveView.assign(
+     |> Phoenix.Component.assign(assigns)
+     |> Phoenix.Component.assign(css_id: String.replace("#{assigns.id}", ~r/[^a-z0-9_-]/, "_"))
+     |> Phoenix.Component.assign(
        moving_element_uid: nil,
        clipboard_size: (assigns.context.clipboard.(:get, nil) || []) |> length()
      )}

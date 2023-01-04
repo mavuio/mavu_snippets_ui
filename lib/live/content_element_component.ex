@@ -10,6 +10,7 @@ defmodule MavuSnippetsUi.Live.ContentElementComponent do
   end
 
   def module_exists?(module) do
+    Code.ensure_loaded(module)
     function_exported?(module, :render, 1)
   end
 end

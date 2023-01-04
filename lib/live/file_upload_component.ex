@@ -13,7 +13,7 @@ defmodule MavuSnippetsUi.Live.FileUploadComponent do
 
     {:ok,
      socket
-     |> Phoenix.LiveView.assign(assigns)
-     |> Phoenix.LiveView.assign(:img_classes, img_classes)}
+     |> Phoenix.Component.assign(assigns)
+     |> Phoenix.Component.assign(:img_classes, img_classes)}
   end
 end

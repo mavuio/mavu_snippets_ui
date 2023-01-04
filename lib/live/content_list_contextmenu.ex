@@ -6,8 +6,8 @@ defmodule MavuSnippetsUi.Live.ContentListContextmenu do
   def update(assigns, socket) do
     {:ok,
      socket
-     |> Phoenix.LiveView.assign(assigns)
-     |> Phoenix.LiveView.assign(
+     |> Phoenix.Component.assign(assigns)
+     |> Phoenix.Component.assign(
        clipboard_size: (assigns.context.clipboard.(:get, nil) || []) |> length()
      )}
   end

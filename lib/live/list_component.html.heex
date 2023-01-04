@@ -49,10 +49,10 @@
                   <td class="flex items-center h-12 space-x-3 text-gray-500">
 
 
-                    <%= live_patch  tw_icon(&Heroicons.Outline.pencil/1, "w-5 h-5"), to: edit_url(row, @base_path, @context ) %>
+                    <%= live_patch  tw_icon(&Heroicons.pencil/1, "w-5 h-5"), to: edit_url(row, @base_path, @context ) %>
 
 
-                    <%= link  tw_icon(&Heroicons.Outline.trash/1, "w-5 h-5"), to: "#",
+                    <%= link  tw_icon(&Heroicons.trash/1, "w-5 h-5"), to: "#",
                     class: "inline-block",
                     phx_click: "delete_item",
                     phx_value_id: row.id,
@@ -67,7 +67,7 @@
           </div>
 
           <div class="mt-8 mb-4 ">
-            <%= link tw_icon(&Heroicons.Outline.plus/1,"w-8 h-8 text-gray-400 hover:text-primary-500 inline-block"), to: "#", class: "text-gray-400", phx_click: "add_item", phx_target: @myself %>
+            <%= link tw_icon(&Heroicons.plus/1,"w-8 h-8 text-gray-400 hover:text-primary-500 inline-block"), to: "#", class: "text-gray-400", phx_click: "add_item", phx_target: @myself %>
           </div>
         </div>
       </div>

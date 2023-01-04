@@ -10,7 +10,7 @@ defmodule MavuSnippetsUi.Live.Ce.CeTextSnippetEdit do
   def update(assigns, socket) do
     socket =
       socket
-      |> Phoenix.LiveView.assign(
+      |> Phoenix.Component.assign(
         active_language_map:
           get_active_language_map(
             assigns.context.active_langs,

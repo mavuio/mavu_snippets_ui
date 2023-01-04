@@ -66,8 +66,8 @@ defmodule MavuSnippetsUi.Live.Ce.CeEditBase do
 
         {:ok,
          socket
-         |> Phoenix.LiveView.assign(assigns)
-         |> Phoenix.LiveView.assign(
+         |> Phoenix.Component.assign(assigns)
+         |> Phoenix.Component.assign(
            changeset:
              changeset_for_this_step(
                celement |> fill_with_defaults(socket.assigns, context),
@@ -108,13 +108,13 @@ defmodule MavuSnippetsUi.Live.Ce.CeEditBase do
           changeset_for_this_step(incoming_data, socket.assigns)
           |> Map.put(:action, :insert)
 
-        {:noreply, Phoenix.LiveView.assign(socket, changeset: changeset)}
+        {:noreply, Phoenix.Component.assign(socket, changeset: changeset)}
       end
 
       def super_handle_event("close_on_save", msg, socket) do
         msg |> log("editor close_on_save event", :debug)
 
-        {:noreply, socket |> Phoenix.LiveView.assign(next_action: :close)}
+        {:noreply, socket |> Phoenix.Component.assign(next_action: :close)}
       end
 
       def super_handle_event("save", %{"step_data" => incoming_data} = msg, socket) do
@@ -136,7 +136,7 @@ defmodule MavuSnippetsUi.Live.Ce.CeEditBase do
         do:
           super_save_step_data(
             Map.drop(incoming_data, ["__next_action"]),
-            Phoenix.LiveView.assign(socket, next_action: String.to_existing_atom(next_action))
+            Phoenix.Component.assign(socket, next_action: String.to_existing_atom(next_action))
           )
 
       def super_save_step_data(incoming_data, socket) do
@@ -157,7 +157,7 @@ defmodule MavuSnippetsUi.Live.Ce.CeEditBase do
             {:noreply, socket}
 
           {:error, %Ecto.Changeset{} = changeset} ->
-            {:noreply, Phoenix.LiveView.assign(socket, changeset: changeset)}
+            {:noreply, Phoenix.Component.assign(socket, changeset: changeset)}
         end
       end
 

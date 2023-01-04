@@ -30,6 +30,6 @@ defmodule MavuSnippetsUi do
 
   def handle_info_from_top_liveview(payload, socket) do
     # put message into liveview-assigns, to pass it down to our components
-    {:noreply, Phoenix.LiveView.assign(socket, mavu_snippets_ui_msg: payload)}
+    {:noreply, Phoenix.Component.assign(socket, mavu_snippets_ui_msg: payload)}
   end
 end
