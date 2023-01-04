@@ -36,12 +36,12 @@
         <div class="flex-auto"><span x-show="size()>0"><span x-text="size()"></span> element(s) selected: </span></div>
         <%= link  [tw_icon(&Heroicons.check_circle/1, "w-4 h-4"),content_tag(:div,"select all")], to: "#", "x-show": "size()==0", "x-on:click.stop": "select_all()", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
         <%= link  [tw_icon(&Heroicons.x_circle/1, "w-4 h-4"),content_tag(:div,"select none")], to: "#", "x-show": "size()!==0", "x-on:click.stop": "select_none()", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
-        <%= link  [tw_icon(&Heroicons.x/1, "w-4 h-4"),content_tag(:div,"close")], to: "#", phx_click: "hide_multiselect_ui", phx_target: @myself, class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
+        <%= link  [tw_icon(&Heroicons.x_mark/1, "w-4 h-4"),content_tag(:div,"close")], to: "#", phx_click: "hide_multiselect_ui", phx_target: @myself, class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
       </div>
 
       <div class="flex justify-between w-full " x-show="size()>0">
-        <%= link  [tw_icon(&Heroicons.clipboard_copy/1, "w-4 h-4"),content_tag(:div,"copy to clipboard")], to: "#", "x-on:click.stop": "send_uids('copy_multiple_ce')", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
-        <%#= link  [tw_icon(&Heroicons.clipboard_copy/1, "w-4 h-4"),content_tag(:div,"cut to clipoard")], to: "#", "x-on:click.stop": "send_uids('cut_multiple_ce')", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
+        <%= link  [tw_icon(&Heroicons.clipboard_document/1, "w-4 h-4"),content_tag(:div,"copy to clipboard")], to: "#", "x-on:click.stop": "send_uids('copy_multiple_ce')", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
+        <%#= link  [tw_icon(&Heroicons.clipboard_document/1, "w-4 h-4"),content_tag(:div,"cut to clipoard")], to: "#", "x-on:click.stop": "send_uids('cut_multiple_ce')", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
         <%= link  [tw_icon(&Heroicons.trash/1, "w-4 h-4"),content_tag(:div,"delete")], to: "#", "x-on:click.stop": "send_uids('delete_multiple_ce')", class: "flex-0 flex items-center space-x-1 btn btn-outline-default text-sm" %>
       </div>
     </div>
@@ -61,7 +61,7 @@
     <div class="fixed z-10 flex items-start p-4 space-x-4 bg-yellow-200 shadow-lg ring-gray-800 top-2">
       <%= link  tw_icon(&Heroicons.chevron_up/1, "w-10 h-10"), to: "#", phx_click: "move_ce", phx_value_direction: "up", phx_value_uid: moving_uid, phx_target: @myself, class: "btn btn-outline-default " %>
       <%= link  tw_icon(&Heroicons.chevron_down/1, "w-10 h-10"), to: "#", phx_click: "move_ce", phx_value_direction: "down", phx_value_uid: moving_uid, phx_target: @myself, class: "btn btn-outline-default " %>
-      <%= link  tw_icon(&Heroicons.x/1, "w-7 h-7"), to: "#", phx_click: "hide_move_ui", phx_target: @myself, class: "" %>
+      <%= link  tw_icon(&Heroicons.x_mark/1, "w-7 h-7"), to: "#", phx_click: "hide_move_ui", phx_target: @myself, class: "" %>
     </div>
 
 
@@ -96,11 +96,11 @@
           %>
 
 
-        <%#= link  tw_icon(&Heroicons.clipboard_copy/1, "w-5 h-5"), to: "#", phx_click: "copy_ce", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
+        <%#= link  tw_icon(&Heroicons.clipboard_document/1, "w-5 h-5"), to: "#", phx_click: "copy_ce", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
           %>
 
 
-        <%= link tw_icon(&Heroicons.arrows_right_left/1, "w-5 h-5"), to: "#", phx_click: "show_move_ui", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
+        <%= link tw_icon(&Heroicons.arrows_up_down/1, "w-5 h-5"), to: "#", phx_click: "show_move_ui", phx_value_uid: item["uid"], phx_target: @myself,  class: tinybtn_classes
           %>
 
 

@@ -20,7 +20,7 @@
         <div class="divide-y divide-y-gray-400">
           <%= link [tw_icon(&Heroicons.check_circle/1, "w-5 h-5"), content_tag(:div, "select multiple")] , to: "#", phx_click: "show_multiselect_ui",  phx_target: @target,  class: lineclass
             %>
-          <%= link [tw_icon(&Heroicons.clipboard_copy/1, "w-5 h-5"), content_tag(:div, "copy element to clipboard")] , to: "#", phx_click: "copy_ce", phx_value_uid: @item["uid"], phx_target: @target,  class: lineclass
+          <%= link [tw_icon(&Heroicons.clipboard_document/1, "w-5 h-5"), content_tag(:div, "copy element to clipboard")] , to: "#", phx_click: "copy_ce", phx_value_uid: @item["uid"], phx_target: @target,  class: lineclass
             %>
           <%= if @clipboard_size>0 do %>
           <%= link [tw_icon(&Heroicons.chevron_up/1, "w-5 h-5"), content_tag(:div, "paste #{@clipboard_size} element(s) from clipboard BEFORE this element")] , to: "#", phx_click: "paste_ce", phx_value_position: "before", phx_value_uid: @item["uid"], phx_target: @target,  class: lineclass
